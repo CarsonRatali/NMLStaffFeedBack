@@ -1,0 +1,66 @@
+﻿@using NMLStaffFeedback.Models
+@using Kendo.Mvc
+@{
+    ViewBag.Title = "Employees";
+}
+@Html.Partial("_Header")
+<div class="container">
+    @(Html.Kendo().Grid<EmployeesModel>()
+
+              .Name("employee_Grid")
+              
+              .Columns(columns =>
+              {
+                  columns.Bound(p => p.ID);
+                  columns.Bound(p => p.FirstName);
+                  columns.Bound(p => p.Surname);
+                  columns.Bound(p => p.Email);
+                  columns.Command(command => { command.Edit(); command.Destroy(); }).Width(200);
+              })
+
+           .ToolBar(toolbar => toolbar.Create())
+           .Editable(editable => editable.Mode(GridEditMode.PopUp))
+           
+           .Filterable(ftb => ftb.Enabled(false))
+           .Scrollable(s => s.Height("auto"))
+           .Sortable()
+           .DataSource(dataSource => dataSource
+              .Ajax()
+              .Events(events => events.Error("error_handler"))
+              .Model(model => model.Id(p => p.ID))
+              .Create(create => create.Action("Editing_Create", "Employee"))
+              .Read(read => read.Action("Editing_Read", "Employee"))
+              .Update(update => update.Action("Editing_Update", "Employee"))
+              .Destroy(destroy => destroy.Action("Editing_Destroy", "Employee"))
+           )
+    )
+</div>
+
+<script type="text/javascript">
+    function error_handler(e) {
+        if (e.errors) {
+            var message = "Unable to perform Operation\n";
+            $.each(e.errors, function (key, value) {
+                if ('errors' in value) {
+                    $.each(value.errors, function () { message += this + "\n"; });
+                }
+            });
+            alert(message);
+
+            //Refresh grid
+            location.reload();
+        }
+    }
+
+    $(document).ready(function () {
+        $("#employee-item").addClass("active");
+    });
+ 
+</script>
+
+<style>
+    li.active a {
+        color: #d92562 !important;
+        border-bottom: 2px solid  #d92562; 
+    }
+</style>

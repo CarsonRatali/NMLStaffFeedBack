@@ -1,0 +1,25 @@
+﻿@model NMLStaffFeedback.Models.EmployeesModel
+@{
+    ViewBag.Title = "Login";
+}
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true, "Login failed. Check your login details.");
+    <div align="center">
+        <fieldset>
+            <legend>Login</legend>
+            <div style="margin-bottom:10px">
+                @Html.LabelFor(m => m.FirstName)
+                @Html.TextBoxFor(m => m.FirstName)
+                @Html.ValidationMessageFor(m => m.FirstName)
+            </div>
+            <div class="editor-label">
+                @Html.LabelFor(m => m.Email)
+                @Html.TextBoxFor(m => m.Email)
+                @Html.ValidationMessageFor(m => m.Email)
+            </div>
+            <hr />
+            <input class="btn btn-primary" type="submit" value="Log In" />
+        </fieldset>
+    </div>
+}

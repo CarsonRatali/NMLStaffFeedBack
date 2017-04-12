@@ -1,0 +1,104 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title</title>
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+    @Styles.Render("~/Content/css",
+                   "~/Content/kendo/2015.3.930/css")
+
+    @Scripts.Render("~/bundles/modernizr",
+                    "~/bundles/jquery",
+                    "~/bundles/bootstrap",
+                    "~/bundles/kendo/2015.3.930/js")
+
+    <script src="@Url.Content("~/Scripts/kendo/2015.3.930/jszip.min.js")"></script>
+</head>
+<body>
+    <div class="navbar navbar navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+               <h4>nml<span>employee</span>feedback</h4> 
+            </div>
+            <div class="navbar-collapse collapse">
+@if (Request.IsAuthenticated)
+{
+                <ul class="nav navbar-nav">
+                    <li id="feedback-item">@Html.ActionLink("FEEDBACK", "Index", "Feedback", new { area = "" }, null)</li>
+                   @* <li id="employee-item">@Html.ActionLink("EMPLOYEES", "Index", "Employee")</li>*@
+                    <li id="question-item">@Html.ActionLink("QUESTIONS", "Index", "Question")</li>
+                    <li id="answer-item">@Html.ActionLink("ANSWERS", "Index", "Answers")</li>        
+                </ul>
+}
+            @Html.Partial("_LoginPartial") 
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+        @RenderSection("SPAViews", required: false)
+        <hr />
+    </div>
+    @RenderSection("scripts", required: false)
+
+</body>
+</html>
+<style>
+    a {
+    text-decoration: none;
+    font-weight: 400;
+    font-family: "Lato","Helvetica Neue","Helvetica","Arial,sans-serif";
+    letter-spacing: 0.02em;
+    font-size: 14px;
+    padding: 0 0 4px;
+    padding: 0 0 .25rem;
+    color:#22ace0;
+    }
+
+    ul.nav a:hover {
+         color: #d92562 !important;
+         background-color: transparent;        
+    }
+    h4 {
+       padding-top: 5px;
+       color:#22ace0;
+    }
+
+    h4 span {
+        color:#025676;
+    }
+
+    body {
+        height:100%;
+    }
+
+    div body.container {
+        height:80%!important;
+    }
+
+    .container.body-content {
+        background-color:#F7F7F7!important;
+       /* height:1000px!important;*/
+    }
+
+    .navbar.navbar-fixed-top {
+        background-color:white;
+    }
+
+    body {
+     /*  background-color:#22ace0;*/
+    }
+    strong {
+         color:#025676;
+    }
+   
+</style>

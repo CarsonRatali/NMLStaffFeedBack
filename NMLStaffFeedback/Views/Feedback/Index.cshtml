@@ -1,0 +1,102 @@
+﻿@using NMLStaffFeedback.Models
+@using Kendo.Mvc
+@{
+    ViewBag.Title = "Feedback";
+}
+@Html.Partial("_Header")
+<div class="container">
+    @(Html.Kendo().Grid<AnswerModel>()
+              .Name("feedback_Grid")
+              .Columns(columns =>
+              {
+                  columns.Bound(p => p.AnswerID);
+                  columns.Bound(p => p.Employee_ID).Hidden();
+                  columns.ForeignKey(p => p.Question_ID, (System.Collections.IEnumerable)ViewData["Questions"], "ID", "Question").Title("Question");
+                  columns.Bound(p => p.Response).ClientTemplate("#if(Response != null){# #=Response ? 'Yes' : 'No' # #} else {# #=''# #}#").Width(150); 
+              })
+             .ToolBar(toolbar => toolbar.Save())
+           .Editable(editable => editable.Mode(GridEditMode.InCell))
+           
+           .Filterable(ftb => ftb.Enabled(false))
+           .Scrollable(s => s.Height("auto"))
+           .Sortable()
+           .DataSource(dataSource => dataSource
+              .Ajax()
+              .Batch(true)
+              .Events(events => events.Error("error_handler"))
+              .Model(model =>
+              {
+                  model.Id(p => p.AnswerID);                 
+                  model.Field(p => p.Question_ID).Editable(false);
+              })
+              .Create(create => create.Action("Editing_Create", "Feedback"))
+              .Read(read => read.Action("Editing_Read", "Feedback"))
+              .Update(update => update.Action("Editing_Update", "Feedback"))
+              .Destroy(destroy => destroy.Action("Editing_Destroy", "Feedback"))
+           )
+    )
+</div>
+
+<script type="text/javascript">
+    function error_handler(e) {
+        if (e.errors) {
+            var message = "Unable to perform Operation\n";
+            $.each(e.errors, function (key, value) {
+                if ('errors' in value) {
+                    $.each(value.errors, function () { message += this + "\n"; });
+                }
+            });
+            alert(message);
+
+            //Refresh grid
+            location.reload();
+        }
+    }
+
+    $(document).ready(function () {
+            $("#feedback-item").addClass("active");
+      
+    });
+
+    function getFilterData() { return { employeeID: $("#id").val() };  }
+
+    //define custom nullable boolean binder so the DropDownList can update the model and vice-versa
+    kendo.data.binders.widget.nullableBoolean = kendo.data.Binder.extend({
+        init: function (widget, bindings, options) {
+            kendo.data.Binder.fn.init.call(this, widget.element[0], bindings, options);
+
+            this.widget = widget;
+            this._change = $.proxy(this.change, this);
+            widget.bind("change", this._change);
+        },
+
+        refresh: function () {
+            var that = this,
+                value = that.bindings.nullableBoolean.get();
+
+            that.widget.value(value !== null ? value.toString() : "");
+        },
+
+        change: function () {
+            var that = this,
+                value = that.widget.value(),
+                modelValue = value === "true" ? true : value === "false" ? false : null;
+            that.bindings.nullableBoolean.set(modelValue);
+        },
+
+        destroy: function () {
+            this.widget.unbind("change", this._change);
+        }
+    });
+
+</script>
+
+<style>
+    li.active a {
+        color: #d92562 !important;
+        border-bottom: 2px solid  #d92562; 
+    }
+
+
+</style>
+

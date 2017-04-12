@@ -1,0 +1,36 @@
+﻿@{
+    string level1URL = "";
+    string level2URL = "";
+    if (ViewBag.Level1Url == null)
+    {
+        level1URL = Url.Content("~/Home/" + @ViewBag.Level1 ?? "Index");
+    }
+    else
+    {
+        level1URL = ViewBag.Level1Url;
+    }
+    if (ViewBag.Level2Url == null)
+    {
+        level2URL = Url.Content("~/Home/" + @ViewBag.Level2 ?? "Index");
+    }
+    else
+    {
+        level2URL = ViewBag.Level2Url;
+    }
+}
+<div class="container-fluid levelHeader">
+    <hr style="margin-left:-25px;margin-bottom:5px;margin-top:5px;margin-right:-25px" />
+    @if (ViewBag.Title != "Home")
+    {
+        <h1 style="margin-top: 10px;">@ViewBag.Title <span style="visibility:hidden" id="HeaderDateSpan"> - <span id="HeaderDate">Test</span></span></h1>
+    }
+    else
+    {
+        <h1 style="margin-top: 10px;">&nbsp;<span style="visibility:hidden" id="HeaderDateSpan"> - <span id="HeaderDate">Test</span></span></h1>
+    }
+</div>
+<style>
+    h1 {
+          color:#025676;
+    }
+</style>

@@ -1,0 +1,5 @@
+@model decimal?
+
+@(Html.Kendo().NumericTextBoxFor(m => m)
+      .HtmlAttributes(new { style = "width:100%" }).Min(0).Decimals(2).Format("0.00")
+)

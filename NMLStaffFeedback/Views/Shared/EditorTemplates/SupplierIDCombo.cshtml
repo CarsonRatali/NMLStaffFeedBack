@@ -1,0 +1,8 @@
+﻿@model object        
+@(
+ Html.Kendo().ComboBoxFor(m => m)
+
+      .DataTextField("Code")
+      .DataValueField("ID")
+      .BindTo((IEnumerable<RhodesFoods.Models.SupplierBatchModel>)ViewData["SupplierBatch"])
+)

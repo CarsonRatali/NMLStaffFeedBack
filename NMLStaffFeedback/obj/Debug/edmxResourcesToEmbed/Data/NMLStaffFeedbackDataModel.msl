@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="NMLStaffFeedbackModelStoreContainer" CdmEntityContainer="NMLStaffFeedbackEntities">
+    <EntitySetMapping Name="Employees">
+      <EntityTypeMapping TypeName="NMLStaffFeedbackModel.Employee">
+        <MappingFragment StoreEntitySet="Employees">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="Surname" ColumnName="Surname" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Questions">
+      <EntityTypeMapping TypeName="NMLStaffFeedbackModel.Question">
+        <MappingFragment StoreEntitySet="Questions">
+          <ScalarProperty Name="DateTimeCreated" ColumnName="DateTimeCreated" />
+          <ScalarProperty Name="Query" ColumnName="Query" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Answers">
+      <EntityTypeMapping TypeName="NMLStaffFeedbackModel.Answer">
+        <MappingFragment StoreEntitySet="Answers">
+          <ScalarProperty Name="Response" ColumnName="Response" />
+          <ScalarProperty Name="Question_ID" ColumnName="Question_ID" />
+          <ScalarProperty Name="Employee_ID" ColumnName="Employee_ID" />
+          <ScalarProperty Name="AnswerID" ColumnName="AnswerID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

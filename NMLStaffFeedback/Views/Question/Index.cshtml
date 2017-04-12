@@ -1,0 +1,64 @@
+﻿@using NMLStaffFeedback.Models
+@using Kendo.Mvc
+@{
+    ViewBag.Title = "Questions";
+}
+@Html.Partial("_Header")
+<div class="container">
+    @(Html.Kendo().Grid<QuestionModel>()
+
+              .Name("question_Grid")
+
+              .Columns(columns =>
+              {
+                  columns.Bound(p => p.ID);
+                  columns.Bound(p => p.Query);
+                  columns.Bound(p => p.DateTimeCreated);                
+                  columns.Command(command => { command.Edit(); command.Destroy(); }).Width(200);
+              })
+
+           .ToolBar(toolbar => toolbar.Create())
+           .Editable(editable => editable.Mode(GridEditMode.PopUp))
+
+           .Filterable(ftb => ftb.Enabled(false))
+           .Scrollable(s => s.Height("auto"))
+           .Sortable()
+           .DataSource(dataSource => dataSource
+              .Ajax()
+              .Events(events => events.Error("error_handler"))
+              .Model(model => model.Id(p => p.ID))
+              .Create(create => create.Action("Editing_Create", "Question"))
+              .Read(read => read.Action("Editing_Read", "Question"))
+              .Update(update => update.Action("Editing_Update", "Question"))
+              .Destroy(destroy => destroy.Action("Editing_Destroy", "Question"))
+           )
+    )
+</div>
+
+<script type="text/javascript">
+    function error_handler(e) {
+        if (e.errors) {
+            var message = "Unable to perform Operation\n";
+            $.each(e.errors, function (key, value) {
+                if ('errors' in value) {
+                    $.each(value.errors, function () { message += this + "\n"; });
+                }
+            });
+            alert(message);
+
+            //Refresh grid
+            location.reload();
+        }
+    }
+
+    $(document).ready(function () {
+        $("#question-item").addClass("active");
+    });
+
+</script>
+<style>
+    li.active a {
+        color: #d92562 !important;
+        border-bottom: 2px solid #d92562;
+    }
+</style>

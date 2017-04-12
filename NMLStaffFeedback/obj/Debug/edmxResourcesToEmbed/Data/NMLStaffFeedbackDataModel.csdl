@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="NMLStaffFeedbackModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Employee">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Surname" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Answers" Relationship="NMLStaffFeedbackModel.FK_Answers_Employees" FromRole="Employee" ToRole="Answer" />
+  </EntityType>
+  <EntityContainer Name="NMLStaffFeedbackEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Employees" EntityType="Self.Employee" />
+    <EntitySet Name="Questions" EntityType="NMLStaffFeedbackModel.Question" />
+    <EntitySet Name="Answers" EntityType="NMLStaffFeedbackModel.Answer" />
+    <AssociationSet Name="FK_Answers_Employees" Association="NMLStaffFeedbackModel.FK_Answers_Employees">
+      <End Role="Employee" EntitySet="Employees" />
+      <End Role="Answer" EntitySet="Answers" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Answers_Questions" Association="NMLStaffFeedbackModel.FK_Answers_Questions">
+      <End Role="Question" EntitySet="Questions" />
+      <End Role="Answer" EntitySet="Answers" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Question">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Query" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="DateTimeCreated" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="Answers" Relationship="NMLStaffFeedbackModel.FK_Answers_Questions" FromRole="Question" ToRole="Answer" />
+  </EntityType>
+  <EntityType Name="Answer">
+    <Key>
+      <PropertyRef Name="AnswerID" />
+    </Key>
+    <Property Name="AnswerID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Employee_ID" Type="Int32" Nullable="false" />
+    <Property Name="Question_ID" Type="Int32" Nullable="false" />
+    <Property Name="Response" Type="Boolean" />
+    <NavigationProperty Name="Employee" Relationship="NMLStaffFeedbackModel.FK_Answers_Employees" FromRole="Answer" ToRole="Employee" />
+    <NavigationProperty Name="Question" Relationship="NMLStaffFeedbackModel.FK_Answers_Questions" FromRole="Answer" ToRole="Question" />
+  </EntityType>
+  <Association Name="FK_Answers_Employees">
+    <End Type="NMLStaffFeedbackModel.Employee" Role="Employee" Multiplicity="1" />
+    <End Type="NMLStaffFeedbackModel.Answer" Role="Answer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Answer">
+        <PropertyRef Name="Employee_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Answers_Questions">
+    <End Type="NMLStaffFeedbackModel.Question" Role="Question" Multiplicity="1" />
+    <End Type="NMLStaffFeedbackModel.Answer" Role="Answer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Question">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Answer">
+        <PropertyRef Name="Question_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

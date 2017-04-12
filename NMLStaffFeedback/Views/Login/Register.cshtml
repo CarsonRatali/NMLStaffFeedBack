@@ -1,0 +1,35 @@
+﻿@model NMLStaffFeedback.Models.EmployeesModel
+@{
+    ViewBag.Title = "Register";
+}
+@using (Html.BeginForm("CreateNewEmployee", "Login"))
+{
+    @Html.ValidationSummary(true, "Registration failed. Check your details.");
+    <div align="center">
+        <fieldset>
+            <legend>Register</legend>
+            <div style="padding-bottom:10px" class="align-content">
+                @Html.LabelFor(m => m.FirstName)
+                @Html.TextBoxFor(m => m.FirstName)
+                @Html.ValidationMessageFor(m => m.FirstName)
+            </div>
+            <div style="padding-bottom:10px">
+                @Html.LabelFor(m => m.Surname)
+                @Html.TextBoxFor(m => m.Surname)
+                @Html.ValidationMessageFor(m => m.Surname)
+            </div>
+            <div class="align-content">
+                @Html.LabelFor(m => m.Email)
+                @Html.TextBoxFor(m => m.Email)
+                @Html.ValidationMessageFor(m => m.Email)
+            </div>
+            <hr />
+            <input class="btn btn-primary" type="submit" value="Register" />
+        </fieldset>
+    </div>
+}
+<style>
+    .align-content {
+        margin-left:20px!important;
+    }
+</style>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="0421c707294d473bb3746298666b3adf" Name="Diagram1">
+        <EntityTypeShape EntityType="NMLStaffFeedbackModel.Employee" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NMLStaffFeedbackModel.Question" Width="1.5" PointX="0.75" PointY="4" />
+        <EntityTypeShape EntityType="NMLStaffFeedbackModel.Answer" Width="1.5" PointX="3" PointY="2.125" />
+        <AssociationConnector Association="NMLStaffFeedbackModel.FK_Answers_Employees" />
+        <AssociationConnector Association="NMLStaffFeedbackModel.FK_Answers_Questions" />
+        </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

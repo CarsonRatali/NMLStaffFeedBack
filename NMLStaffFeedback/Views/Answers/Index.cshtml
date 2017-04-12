@@ -1,0 +1,123 @@
+﻿@using NMLStaffFeedback.Models
+@using Kendo.Mvc
+@{
+    ViewBag.Title = "Responses";
+}
+@Html.Partial("_Header")
+@helper  RenderAnswerGrid()
+{
+    @(Html.Kendo().Grid<AnswerModel>()
+
+              .Name("answer_Grid")
+
+              .Columns(columns =>
+              {
+                  columns.ForeignKey(p => p.Employee_ID, (System.Collections.IEnumerable)ViewData["Employee"], "ID", "Name").Title("Employee");
+                  columns.Bound(p => p.Response).ClientTemplate("#if(Response != null){# #=Response ? 'Yes' : 'No' # #} else {# #=''# #}#").Width(150);
+              })
+           .Filterable(ftb => ftb.Enabled(false))
+           .Scrollable(s => s.Height("auto"))
+           .Sortable()
+           .DataSource(dataSource => dataSource
+              .Ajax()
+              .Events(events => events.Error("error_handler"))
+              .Model(model => model.Id(p => p.Employee_ID))
+              .Read(read => read.Action("Editing_Read", "Answers").Data("getFilterData"))
+           )
+    )
+}
+
+
+<div>
+<nav class="navbar navbar-default nav-justified navSearch nav-search">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header nav-search">
+            <button type="button" class="navbar-toggle nav-search" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand navSearch" style="padding-top: 13px; padding-bottom: 13px;"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Filter</a>
+        </div>
+        <center>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse nav-search" id="bs-example-navbar-collapse-1">
+                <div>
+                    <div>
+                        <div class="navbar-text nav-search">Question</div>
+                        <div class="navbar-form navbar-left nav-search" role="search">
+                            @(Html.Kendo().DropDownList()
+                                      .Name("QuestionFilter")
+                                      .BindTo((System.Collections.IEnumerable)ViewData["Questions"])
+                                      .Events(e => e.Change("onFilterCriteriaChanged"))
+                                      .DataTextField("Question")
+                                      .DataValueField("ID")
+                                      .Enable(true)
+                                      .AutoBind(true)
+                                      .SelectedIndex(0)
+                                      .HtmlAttributes(new { style="width:400px"})
+                            )
+                        </div>
+                    </div>
+                </div>
+                <p class="navbar-form navbar-right navbar-btn" id="refreshBtn">
+                    @(Html.Kendo().Button()
+                        .Name("refreshKendoBtn")
+                        .Events(e => e.Click("onFilterCriteriaChanged"))
+                        .Content(@<text>Refresh</text>)
+                        .HtmlAttributes(new { @class = "btn btn-default" })
+                    )
+                </p>
+            </div><!-- /.navbar-collapse -->
+        </center>
+    </div><!-- /.container-fluid -->
+</nav>
+</div>
+<div class="container">@RenderAnswerGrid()</div>
+
+
+<script type="text/javascript">
+    function error_handler(e) {
+        if (e.errors) {
+            var message = "Unable to perform Operation\n";
+            $.each(e.errors, function (key, value) {
+                if ('errors' in value) {
+                    $.each(value.errors, function () { message += this + "\n"; });
+                }
+            });
+            alert(message);
+
+            //Refresh grid
+            location.reload();
+        }
+    }
+
+    $(document).ready(function () {
+        $("#answer-item").addClass("active");
+    });
+
+   function onFilterCriteriaChanged() {
+            refreshGrid("#answer_Grid")
+        }
+
+
+    function refreshGrid(gridName) {
+        $(gridName).data("kendoGrid").dataSource.read();
+    };
+
+    function getFilterData() {
+        var questionID = $("#QuestionFilter").data("kendoDropDownList").dataItem().ID;
+
+        return { questionID: questionID }
+    };
+
+
+</script>
+<style>
+    li.active a {
+      color: #d92562 !important;
+      border-bottom: 2px solid  #d92562; 
+    }
+</style>

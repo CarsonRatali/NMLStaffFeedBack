@@ -1,0 +1,6 @@
+@model DateTime?
+           
+@(Html.Kendo().TimePickerFor(m => m)
+.Format("HH:mm").Interval(15).ParseFormats( new List<string>() { "HH:mm" })
+.Events(e=>e.Open("GetTimes"))
+)
